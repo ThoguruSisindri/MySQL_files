@@ -1,0 +1,81 @@
+create database str;
+use str;
+CREATE TABLE EMPLOYEES (
+    EMPLOYEE_ID INT PRIMARY KEY,
+    FIRST_NAME VARCHAR(30),
+    LAST_NAME VARCHAR(30),
+    PHONE_NUMBER VARCHAR(20),
+    EMAIL VARCHAR(50),
+    DEPARTMENT_ID INT,
+    SALARY DECIMAL(10,2)
+);
+
+INSERT INTO EMPLOYEES VALUES
+(101, 'Steven', 'King', '515.123.4567', 'SKing', 90, 24000),
+(102, 'Neena', 'Kochhar', '515.123.4568', 'NKochhar', 90, 17000),
+(103, 'Lex', 'De Haan', '515.123.4569', 'LDeHaan', 90, 17000),
+(104, 'Alexander', 'Hunold', '590.423.4567', 'AHunold', 60, 9000),
+(105, 'Bruce', 'Ernst', '590.423.4568', 'BErnst', 60, 6000),
+(106, 'David', 'Austin', '590.423.4569', 'DAustin', 50, 4800);
+
+select * from EMPLOYEES;
+
+-- Return EMPID, FULLNAME as FIRST_NAME + LAST_NAME
+SELECT EMPLOYEE_ID,
+       CONCAT(FIRST_NAME, ' ', LAST_NAME) AS FULLNAME
+FROM EMPLOYEES;
+
+-- FULLNAME as First Letter of Firstname + '. ' + Lastname
+
+SELECT EMPLOYEE_ID,
+       CONCAT(LEFT(FIRST_NAME,1), '. ', LAST_NAME) AS FULLNAME
+FROM EMPLOYEES;
+
+-- Remove '.' from MOBILE NUMBER
+SELECT EMPLOYEE_ID,
+       CONCAT(FIRST_NAME, ' ', LAST_NAME) AS FULLNAME,
+       REPLACE(PHONE_NUMBER, '.', '') AS MOBILE_NUMBER
+FROM EMPLOYEES;
+
+-- Return records where EMAIL = (first character of first name + last name)
+SELECT EMPLOYEE_ID,
+       CONCAT(LEFT(FIRST_NAME,1), LAST_NAME) AS FULLNAME,
+       EMAIL
+FROM EMPLOYEES
+WHERE CONCAT(LEFT(FIRST_NAME,1), LAST_NAME) = EMAIL;
+
+-- Return EMPID, FULLNAME, EMAILID as EMAIL@gmail.com
+SELECT EMPLOYEE_ID,
+       CONCAT(FIRST_NAME, ' ', LAST_NAME) AS FULLNAME,
+       CONCAT(EMAIL, '@gmail.com') AS EMAIL_ID
+FROM EMPLOYEES;
+
+-- Top 5 Employees by Salary
+SELECT *
+FROM EMPLOYEES
+ORDER BY SALARY DESC
+LIMIT 5;
+
+-- Return records where FULLNAME length > 15 characters
+SELECT EMPLOYEE_ID,
+       CONCAT(FIRST_NAME, ' ', LAST_NAME) AS FULLNAME,
+       EMAIL
+FROM EMPLOYEES
+WHERE CHAR_LENGTH(CONCAT(FIRST_NAME, ' ', LAST_NAME)) > 15;
+
+-- EMAIL = (EMAIL + first 3 chars of mobile + '@gmail.com') for Dept 10,20,50,90
+SELECT EMPLOYEE_ID,
+       CONCAT(FIRST_NAME, ' ', LAST_NAME) AS FULLNAME,
+       CONCAT(EMAIL, LEFT(PHONE_NUMBER, 3), '@gmail.com') AS EMAIL,
+       PHONE_NUMBER
+FROM EMPLOYEES
+WHERE DEPARTMENT_ID IN (10,20,50,90)
+ORDER BY EMAIL;
+
+
+
+
+
+
+
+
